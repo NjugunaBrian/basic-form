@@ -1,0 +1,3 @@
+*.hack linguist-detectable=false
+*.hh linguist-detectable=false
+*.hhi linguist-detectable=false
