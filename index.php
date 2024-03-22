@@ -6,26 +6,70 @@
     <title>Document</title>
 </head>
 <body>
-    <main>
-        <form action="includes/formHandler.php" method="POST">
-            <label for='firstname'>FirstName</label>
-            <input id='firstname' name='firstname' type='text' placeholder='Firstname'/>
-            <br>
-            <label for='secondname'>SecondName</label>
-            <input id='secondname' name='secondname' type='text' placeholder='Secondname'/>
-            <br>
-            <label for='favoritepet'>Favorite Pet?</label>
-            <select id='favoritepet' name='favoritepet'>
-                <option value='none'>None</option>
-                <option value='dog'>Dog</option>
-                <option value='cat'>Cat</option>
-                <option value='bird'>Bird</option>
+        <form action="<?php echo htmlspecialchars( $_SERVER['PHP_SELF']); ?>" method="POST">
+            <input type='number' name='num01' placeholder='Number One' required/>
+            <select name='operator'>
+                <option value='add'>+</option>
+                <option value='multiply'>*</option>
+                <option value='subtract'>-</option>
+                <option value='divide'>/</option>
             </select>
-            <br>
+            <input type='number' name='num02' placeholder='Number Two'required/>
 
-            <button  type='submit'>Submit</button>
+            <button  type='submit'>Calculate</button>
         </form>
-    </main>
+
+        <?php 
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $num01 = filter_input(INPUT_POST, 'num01', FILTER_SANITIZE_NUMBER_FLOAT);
+            $num02 = filter_input(INPUT_POST, 'num02', FILTER_SANITIZE_NUMBER_FLOAT);
+            $operator = htmlspecialchars($_POST['operator']);
+
+        }
+
+        //error handlers
+        $errors = false;
+        
+        if(empty($num01) || empty($num02) || empty($operator)){
+            echo "<p>Only write numbers!</p>";
+
+            $errors = true;
+        }
+        if(!is_numeric($num01) || !is_numeric($num02)){
+            echo "<p>Only write numbers!</p>";
+
+            $errors = true;
+        }
+
+        if(!$errors){
+
+            $value = 0;
+            switch ($operator) {
+                case "add":
+                    $value = $num01 + $num02;
+                    break;
+
+                case "subtract":
+                    $value = $num01 - $num02;
+                    break;
+                    
+                case "multiply":
+                    $value = $num01 * $num02;
+                    break;
+                    
+                case "divide":
+                    $value = $num01 / $num02;
+                    break; 
+                default:
+                   echo "<p>Syntax Error!</p>";       
+            }
+            echo "<p>Result = " . + $value ."</p>";
+        }
+        
+        
+        
+        ?>
 
 </body>
 </html>
